@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${appName}">Doc2FAQ</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <h1 class="logo" th:text="${appName}">Doc2FAQ</h1>
+            <p class="tagline" th:text="${appDescription}">
+                Transform your documents into structured FAQs automatically.
+            </p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+
+            <section class="intro">
+                <h2>What is Doc2FAQ?</h2>
+                <p>
+                    Doc2FAQ is a web application that takes your uploaded documents and
+                    automatically generates a set of frequently asked questions (FAQs)
+                    from the content. Whether you have user manuals, policy documents, or
+                    knowledge-base articles, Doc2FAQ helps you surface the most important
+                    information quickly and clearly.
+                </p>
+            </section>
+
+            <section class="features">
+                <h2>Planned Features</h2>
+                <ul class="feature-list">
+                    <li>
+                        <span class="feature-icon">📄</span>
+                        <div>
+                            <strong>Document Ingestion</strong>
+                            <p>Upload PDFs, Word documents, and plain-text files for processing.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="feature-icon">🤖</span>
+                        <div>
+                            <strong>Automatic FAQ Generation</strong>
+                            <p>Intelligent extraction of questions and answers from your content.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="feature-icon">🌐</span>
+                        <div>
+                            <strong>Web-Based Interface</strong>
+                            <p>Manage and browse your generated FAQs from any browser.</p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="status">
+                <h2>Project Status</h2>
+                <p>
+                    Doc2FAQ is currently in its early development phase. The foundation is
+                    in place and core features are being actively built. Stay tuned for updates!
+                </p>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2024 Doc2FAQ. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
