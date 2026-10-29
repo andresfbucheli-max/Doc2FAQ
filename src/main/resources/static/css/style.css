@@ -54,7 +54,8 @@ body {
 /* Sections */
 .intro,
 .features,
-.status {
+.status,
+.upload-section {
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
@@ -64,7 +65,8 @@ body {
 
 .intro h2,
 .features h2,
-.status h2 {
+.status h2,
+.upload-section h2 {
     font-size: 1.35rem;
     color: #1a73e8;
     margin-bottom: 0.85rem;
@@ -75,6 +77,11 @@ body {
 .intro p,
 .status p {
     color: #555;
+}
+
+.upload-intro {
+    color: #555;
+    margin-bottom: 1.25rem;
 }
 
 /* Feature list */
@@ -121,6 +128,146 @@ body {
 }
 
 /* ---- Responsive ---- */
+
+/* ============================================================
+   Upload Section Styles
+   ============================================================ */
+
+/* Form row */
+.upload-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Hidden native file input */
+.file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+/* Custom file-picker label */
+.file-label {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    cursor: pointer;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    overflow: hidden;
+    flex: 1;
+    min-width: 0;
+}
+
+.file-name-display {
+    flex: 1;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.95rem;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: #fff;
+}
+
+.choose-btn {
+    padding: 0.55rem 1rem;
+    background-color: #e8f0fe;
+    color: #1a73e8;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-left: 1px solid #d0d0d0;
+    white-space: nowrap;
+    transition: background-color 0.15s;
+}
+
+.file-label:hover .choose-btn {
+    background-color: #d2e3fc;
+}
+
+/* Upload submit button */
+.upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.6rem;
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    white-space: nowrap;
+}
+
+.upload-btn:hover:not(:disabled) {
+    background-color: #1558b0;
+}
+
+.upload-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* Spinner */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Status messages */
+.upload-status {
+    margin-top: 1rem;
+    padding: 0.9rem 1rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.status-success {
+    background-color: #e6f4ea;
+    border: 1px solid #a8d5b5;
+    color: #1e6e37;
+}
+
+.status-error {
+    background-color: #fce8e6;
+    border: 1px solid #f1a8a3;
+    color: #c5221f;
+}
+
+/* Responsive – stack form on small screens */
+@media (max-width: 600px) {
+    .upload-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .upload-btn {
+        justify-content: center;
+    }
+}
 @media (max-width: 600px) {
     .site-header .logo {
         font-size: 2rem;
