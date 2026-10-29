@@ -19,6 +19,39 @@
 
     <main class="main-content">
         <div class="container">
+            <!-- ===== Upload Section ===== -->
+            <section class="upload-section">
+                <h2>Upload a Document</h2>
+                <p class="upload-intro">
+                    Upload a <strong>.pdf</strong>, <strong>.docx</strong>, or
+                    <strong>.txt</strong> file (max&nbsp;10&nbsp;MB) to begin FAQ generation.
+                </p>
+
+                <form id="uploadForm" class="upload-form" novalidate>
+                    <label for="fileInput" class="file-label">
+                        <span id="fileNameDisplay" class="file-name-display">No file chosen</span>
+                        <span class="choose-btn">Choose File</span>
+                        <input
+                            type="file"
+                            id="fileInput"
+                            name="file"
+                            accept=".pdf,.docx,.txt"
+                            class="file-input"
+                            required
+                        />
+                    </label>
+
+                    <button type="submit" id="uploadBtn" class="upload-btn">
+                        <span id="uploadBtnText">Upload</span>
+                        <span id="uploadSpinner" class="spinner hidden" aria-hidden="true"></span>
+                    </button>
+                </form>
+
+                <!-- Status message box (hidden until a response arrives) -->
+                <div id="uploadStatus" class="upload-status hidden" role="alert" aria-live="polite"></div>
+            </section>
+            <!-- ===== / Upload Section ===== -->
+
 
             <section class="intro">
                 <h2>What is Doc2FAQ?</h2>
@@ -74,6 +107,96 @@
             <p>&copy; 2024 Doc2FAQ. All rights reserved.</p>
         </div>
     </footer>
+
+<script>
+(function () {
+    "use strict";
+
+    const form            = document.getElementById("uploadForm");
+    const fileInput       = document.getElementById("fileInput");
+    const fileNameDisplay = document.getElementById("fileNameDisplay");
+    const uploadBtn       = document.getElementById("uploadBtn");
+    const btnText         = document.getElementById("uploadBtnText");
+    const spinner         = document.getElementById("uploadSpinner");
+    const statusBox       = document.getElementById("uploadStatus");
+
+    const ALLOWED_EXT = ["pdf", "docx", "txt"];
+    const MAX_BYTES   = 10 * 1024 * 1024; // 10 MB
+
+    // Update filename label when the user picks a file
+    fileInput.addEventListener("change", function () {
+        fileNameDisplay.textContent = fileInput.files.length > 0
+            ? fileInput.files[0].name
+            : "No file chosen";
+        clearStatus();
+    });
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        clearStatus();
+
+        const file = fileInput.files[0];
+        if (!file) {
+            showStatus(false, "Please select a file before uploading.");
+            return;
+        }
+
+        // Client-side validation (mirrors server-side checks)
+        const ext = file.name.split(".").pop().toLowerCase();
+        if (!ALLOWED_EXT.includes(ext)) {
+            showStatus(false, "Invalid file type '." + ext + "'. Only .pdf, .docx, and .txt files are accepted.");
+            return;
+        }
+        if (file.size > MAX_BYTES) {
+            showStatus(false, "File is too large (" + (file.size / (1024 * 1024)).toFixed(1) + " MB). Maximum allowed size is 10 MB.");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const response = await fetch("/upload", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showStatus(true,
+                    data.message + "<br/>File ID: <strong>" + data.fileId + "</strong>");
+                form.reset();
+                fileNameDisplay.textContent = "No file chosen";
+            } else {
+                showStatus(false, data.message);
+            }
+        } catch (err) {
+            showStatus(false, "An unexpected error occurred. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    });
+
+    function showStatus(success, html) {
+        statusBox.innerHTML = html;
+        statusBox.className = "upload-status " + (success ? "status-success" : "status-error");
+    }
+
+    function clearStatus() {
+        statusBox.innerHTML = "";
+        statusBox.className = "upload-status hidden";
+    }
+
+    function setLoading(loading) {
+        uploadBtn.disabled = loading;
+        btnText.textContent = loading ? "Uploading\u2026" : "Upload";
+        spinner.classList.toggle("hidden", !loading);
+    }
+}());
+</script>
 
 </body>
 </html>
